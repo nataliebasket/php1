@@ -1,0 +1,3 @@
+$name = "Natasha";
+
+print($name);
