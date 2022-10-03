@@ -19,7 +19,7 @@ $tasks = [
     ],
     [
         'name' => 'Выполнить тестовое задание',
-        'date' => '25.12.2019',
+        'date' => '03.10.2022',
         'category' => $categories['work'],
         'status' => false
     ],
