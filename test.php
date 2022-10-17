@@ -1,3 +1,3 @@
 $name = "Natasha";
 
-print($name);
+var_dump($name);
