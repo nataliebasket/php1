@@ -6,7 +6,7 @@
             <?php foreach ($categories as $value): ?>
                 <li class="main-navigation__list-item">
                     <a class="main-navigation__list-item-link" href="#"><?=htmlspecialchars($value["name"]);?></a>
-                    <span class="main-navigation__list-item-count"><?= countCategories($tasks, $value) ?></span>
+                    <span class="main-navigation__list-item-count"><?=$value["name_count"]?></span>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -47,7 +47,23 @@
             <?php if (($value['status']) && ($show_complete_tasks == 0)): ?>
                 <?php continue; ?>
             <?php elseif ($value['name']): ?>
-                <?=include_template('task_item.php', ['value' => $value]); ?>
+                <tr class="tasks__item task <?= ($value['status'])? "task--completed": "" ?>
+                    <?php if ($value['date_make']): ?><?php if (isDateImportant($value['date_make'])): ?>task--important<?php endif; ?><?php endif; ?>">
+                    <td class="task__select">
+                        <label class="checkbox task__checkbox">
+                            <input class="checkbox__input visually-hidden" type="checkbox" <?= ($value['status'])? "checked": "" ?>>
+                            <span class="checkbox__text"><?=htmlspecialchars($value['name']);?></span>
+                        </label>
+                    </td>
+
+                    <?php if ($value['date_make']): ?>
+                        <td class="task__date"><?=date( "Y-m-d", strtotime($value['date_make']));?></td>
+                    <?php else: ?>
+                        <td class="task__date"></td>
+                    <?php endif; ?>
+                    <td class="task__controls">
+                    </td>
+                </tr>
             <?php endif ?>
         <?php endforeach; ?>
     </table>
