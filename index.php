@@ -10,9 +10,21 @@ if ($con == false) {
     print("Ошибка подключения к бд: " . mysqli_connect_error());
 }
 else {
+
+    $user_project = '%';
+    $project_get_id = filter_input(INPUT_GET, 'user_project');
+
+    $user_projects = getUserProjects($con, 1);
+
+    foreach ($user_projects as $project) {
+        if ($project["id"] == $project_get_id) { $user_project = $project["id"]; };
+    }
+
     $page_content = include_template('main.php', [
         'categories' => getUserProjects ($con, 1),
-        'tasks' => getUserTasks($con,1),
+//        'tasks' => getUserTasks($con,1),
+        'tasks' => getUserTasks($con,1, $user_project),
+
         'show_complete_tasks' => $show_complete_tasks
     ]);
 
