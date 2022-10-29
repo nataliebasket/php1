@@ -5,7 +5,7 @@
         <ul class="main-navigation__list">
             <?php foreach ($categories as $value): ?>
                 <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="index.php?user_project=<?=$value["id"];?>"><?=htmlspecialchars($value["name"]);?></a>
+                    <a class="main-navigation__list-item-link<?php if ($user_project == $value["id"] ): ?> main-navigation__list-item--active<?php endif; ?>" href="index.php?user_project=<?=$value["id"];?>"><?=htmlspecialchars($value["name"]);?></a>
                     <span class="main-navigation__list-item-count"><?=$value["name_count"]?></span>
                 </li>
             <?php endforeach; ?>

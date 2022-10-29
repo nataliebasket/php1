@@ -14,10 +14,13 @@ function getUserProjects(object $con, int $id): array
 }
 
 //Получить список всех задач пользователя по id:
-function getUserTasks(object $con, int $id, string $id_p): array
+function getUserTasks(object $con, int $user_id, int $id_project): array
 {
-    $sql_tasks = sprintf("SELECT * FROM task t WHERE user_id = '%s' AND project_id LIKE '%s';", $id, $id_p);
+    if (!$id_project) {
+        $sql_tasks = sprintf("SELECT * FROM task t WHERE user_id = '%s';", $user_id);
+    } else {
+        $sql_tasks = sprintf("SELECT * FROM task t WHERE user_id = '%s' AND project_id = '%s';", $user_id, $id_project);
+    }
     $result_tasks = mysqli_query($con, $sql_tasks);
-
     return mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
 }
