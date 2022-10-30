@@ -13,7 +13,6 @@ else {
 
     $user_project = 0;
     $project_get_id = filter_input(INPUT_GET, 'user_project', FILTER_SANITIZE_NUMBER_INT);
-
     $user_projects = getUserProjects($con, 1);
     $is_project_found = false;
     foreach ($user_projects as $project) {
@@ -27,11 +26,11 @@ else {
         http_response_code(404);
         $page_content = include_template('404.php', ['text404' => '404 Такого проекта не существует',]);
     } else {
-        $page_content = include_template('main.php', [
-            'projects' => getUserProjects ($con, 1),
+        $page_content = include_template('add-task.php', [
+            'projects' => $user_projects,
             'user_project' => $user_project,
-            'tasks' => getUserTasks($con,1, $user_project),
-            'show_complete_tasks' => $show_complete_tasks
+//            'tasks' => getUserTasks($con,1, $user_project),
+//            'show_complete_tasks' => $show_complete_tasks
         ]);
     }
 

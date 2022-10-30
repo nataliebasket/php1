@@ -1,20 +1,7 @@
-<section class="content__side">
-    <h2 class="content__side-heading">Проекты</h2>
-
-    <nav class="main-navigation">
-        <ul class="main-navigation__list">
-            <?php foreach ($categories as $value): ?>
-                <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link<?php if ($user_project == $value["id"] ): ?> main-navigation__list-item--active<?php endif; ?>" href="index.php?user_project=<?=$value["id"];?>"><?=htmlspecialchars($value["name"]);?></a>
-                    <span class="main-navigation__list-item-count"><?=$value["name_count"]?></span>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </nav>
-
-    <a class="button button--transparent button--plus content__side-button"
-       href="pages/form-project.html" target="project_add">Добавить проект</a>
-</section>
+<?= include_template('side.php', [
+    'projects' => $projects,
+    'user_project' => $user_project,
+]); ?>
 
 <main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
