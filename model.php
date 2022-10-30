@@ -22,5 +22,8 @@ function getUserTasks(object $con, int $user_id, int $id_project): array
         $sql_tasks = sprintf("SELECT * FROM task t WHERE user_id = '%s' AND project_id = '%s';", $user_id, $id_project);
     }
     $result_tasks = mysqli_query($con, $sql_tasks);
+    if (!$result_tasks) {
+        return [];
+    }
     return mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
 }

@@ -15,19 +15,25 @@ else {
     $project_get_id = filter_input(INPUT_GET, 'user_project');
 
     $user_projects = getUserProjects($con, 1);
+    $is_project_found = false;
     foreach ($user_projects as $project) {
-        if ($project["id"] == $project_get_id) { $user_project = $project["id"]; };
+        if ($project["id"] == $project_get_id) {
+            $user_project = $project["id"];
+            $is_project_found = true;
+        };
     }
 
-    if ()
-    http_response_code(404);
-
-    $page_content = include_template('main.php', [
-        'categories' => getUserProjects ($con, 1),
-        'user_project' => $user_project,
-        'tasks' => getUserTasks($con,1, $user_project),
-        'show_complete_tasks' => $show_complete_tasks
-    ]);
+    if ((!$is_project_found and $project_get_id) or (getUserTasks($con,1, $user_project) == [])) {
+        http_response_code(404);
+        $page_content = include_template('404.php', ['text404' => '404 Такого проекта не существует',]);
+    } else {
+        $page_content = include_template('main.php', [
+            'categories' => getUserProjects ($con, 1),
+            'user_project' => $user_project,
+            'tasks' => getUserTasks($con,1, $user_project),
+            'show_complete_tasks' => $show_complete_tasks
+        ]);
+    }
 
     $layout_content = include_template('layout.php', [
         'content' => $page_content,
