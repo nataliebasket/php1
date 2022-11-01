@@ -1,12 +1,12 @@
 <?= include_template('side.php', [
     'projects' => $projects,
-    'user_project' => $user_project,
+    'project_id' => $project_id,
 ]); ?>
 
 <main class="content__main">
     <h2 class="content__main-heading">Добавление задачи</h2>
 
-    <form class="form"  action="index.html" method="post" autocomplete="off" enctype="multipart/form-data">
+    <form class="form"  action="add-task.php" method="post" autocomplete="off" enctype="multipart/form-data">
         <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
@@ -18,7 +18,7 @@
 
             <select class="form__input form__input--select" name="project" id="project">
                 <?php foreach ($projects as $project): ?>
-                    <option value="<?=htmlspecialchars($project["name"]);?>"><?=htmlspecialchars($project["name"]);?></option>
+                    <option value="<?=htmlspecialchars($project["id"]);?>"><?=htmlspecialchars($project["name"]);?></option>
                 <?php endforeach; ?>
             </select>
         </div>

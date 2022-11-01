@@ -1,6 +1,6 @@
 <?= include_template('side.php', [
     'projects' => $projects,
-    'user_project' => $user_project,
+    'project_id' => $project_id,
 ]); ?>
 
 <main class="content__main">
