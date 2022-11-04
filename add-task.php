@@ -11,31 +11,33 @@ else {
 
     $user_projects = getUserProjects($con, 1);
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $task = $_POST; // получаем данные из формы
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $task = $_POST;
+
+        $task['file'] = null;
 
         // сохраняем файл
-        if (isset($_FILES['file'])) {
+        if ($_FILES['file']['name'] != null) {
+            $current_path = $_FILES['file']['tmp_name'];
             $filename = $_FILES['file']['name'];
-            move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $filename);
+            $new_path = 'uploads/' . $filename;
+            move_uploaded_file($current_path, $new_path);
+            print_r($_FILES['file']['name']);
+            $task['file'] = $filename;
         }
 
-        $name = $_POST['name'];
-        $project_id = $_POST['project'];
-        $date_make = $_POST['date'];
-        $file = 'uploads/' . $_FILES['file']['name'];
-        $user_id = 1;
+        $task['user_id'] = 1;
 
-        $sql = 'INSERT INTO task (name, file, date_make, user_id, project_id) VALUES (?, ?, ?, ?, ?)';
+        $sql = "INSERT INTO task (name, project_id, date_make, file, user_id) VALUES (?, ?, ?, ?, ?)";
 
-        $stmt = db_get_prepare_stmt($con, $sql, [$name, $file, $date_make, $user_id, $project_id]);
+        $stmt = db_get_prepare_stmt($con, $sql, $task);
         $res = mysqli_stmt_execute($stmt);
-
+//        var_dump($task);
 
         if ($res) {
-            $task_id = mysqli_insert_id($con);
-
-            header('Location: /index.php');
+//            $task_id = mysqli_insert_id($con);
+            header("Location: index.php");
         }
 
     }
@@ -53,8 +55,5 @@ else {
 
     print ($layout_content);
 
-
 }
-
-
 

@@ -20,7 +20,7 @@ CREATE TABLE task (
     date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status INT DEFAULT 0,
     name VARCHAR(128) NOT NULL,
-    file VARCHAR(128) UNIQUE,
+    file VARCHAR(128),
     date_make TIMESTAMP,
     user_id INT,
     project_id INT,

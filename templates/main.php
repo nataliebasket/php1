@@ -31,14 +31,14 @@
 
 
         <?php foreach ($tasks as $key => $value): ?>
-            <?php if (($value['status']) && ($show_complete_tasks == 0)): ?>
+            <?php if (($value['is_done']) && ($show_complete_tasks == 0)): ?>
                 <?php continue; ?>
             <?php elseif ($value['name']): ?>
-                <tr class="tasks__item task <?= ($value['status'])? "task--completed": "" ?>
+                <tr class="tasks__item task <?= ($value['is_done'])? "task--completed": "" ?>
                     <?php if ($value['date_make']): ?><?php if (isDateImportant($value['date_make'])): ?>task--important<?php endif; ?><?php endif; ?>">
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
-                            <input class="checkbox__input visually-hidden" type="checkbox" <?= ($value['status'])? "checked": "" ?>>
+                            <input class="checkbox__input visually-hidden" type="checkbox" <?= ($value['is_done'])? "checked": "" ?>>
                             <span class="checkbox__text"><?=htmlspecialchars($value['name']);?></span>
                         </label>
                     </td>
