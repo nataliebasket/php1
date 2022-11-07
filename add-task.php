@@ -9,11 +9,27 @@ if ($con == false) {
 }
 else {
 
-    $user_projects = getUserProjects($con, 1);
+//    $user_projects = getUserProjects($con, 1);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $errors = [];
 
-        $task = $_POST;
+        $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project_id' => FILTER_DEFAULT, 'date_make' => FILTER_DEFAULT]);
+
+        function test_input($data):string {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
+
+        if (!$task['name']) {
+            $errors['name'] = 'Заполните это поле';
+        } elseif (strlen($task['name'] < 10 ) or strlen($task['name'] > 100 )) {
+            $errors['name'] = 'Кол-во символов от 10 до 100';
+        } else {
+            $task['name'] = test_input($task['name']);
+        }
 
         $task['file'] = null;
 
@@ -29,22 +45,23 @@ else {
 
         $task['user_id'] = 1;
 
-        $sql = "INSERT INTO task (name, project_id, date_make, file, user_id) VALUES (?, ?, ?, ?, ?)";
+        if (!count($errors)) {
+            $sql = "INSERT INTO task (name, project_id, date_make, file, user_id) VALUES (?, ?, ?, ?, ?)";
 
-        $stmt = db_get_prepare_stmt($con, $sql, $task);
-        $res = mysqli_stmt_execute($stmt);
-//        var_dump($task);
+            $stmt = db_get_prepare_stmt($con, $sql, $task);
+            $res = mysqli_stmt_execute($stmt);
 
-        if ($res) {
+            if ($res) {
 //            $task_id = mysqli_insert_id($con);
-            header("Location: index.php");
+                header("Location: index.php");
+            }
         }
-
     }
 
     $page_content = include_template('add-task.php', [
-        'projects' => $user_projects,
+        'projects' => getUserProjects($con, 1),
         'project_id' => 0,
+        'errors' => $errors ?? null,
     ]);
 
 

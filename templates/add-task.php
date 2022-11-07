@@ -9,8 +9,11 @@
     <form class="form"  action="add-task.php" method="post" autocomplete="off" enctype="multipart/form-data">
         <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
-
-            <input class="form__input" type="text" name="name" id="name" value="" placeholder="Введите название">
+            <?php $error_class = isset($errors['name']) ? "form__input--error" : "" ?>
+            <input class="form__input <?= $error_class; ?>" type="text" name="name" id="name" value="" placeholder="Введите название">
+            <?php if (isset($errors['name'])) : ?>
+                <p class="form__message"><?= $errors['name'] ?></p>
+            <?php endif ?>
         </div>
 
         <div class="form__row">
