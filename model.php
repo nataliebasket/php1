@@ -27,3 +27,12 @@ function getUserTasks(object $con, int $user_id, int $id_project): array
     }
     return mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
 }
+
+function checkUserProjects(object $con, int $project_id, int $user_id): array
+{
+    $sql_projects = sprintf(
+        "SELECT id FROM project WHERE id = '%s' AND user_id = '%s';", $project_id, $user_id);
+    $result_projects = mysqli_query($con, $sql_projects);
+
+    return mysqli_fetch_all($result_projects, MYSQLI_ASSOC);
+}

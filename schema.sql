@@ -5,6 +5,8 @@ CREATE DATABASE doingsdone
 CREATE TABLE project (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(128),
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
 CREATE TABLE user (
