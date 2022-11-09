@@ -23,23 +23,26 @@
             <select class="form__input form__input--select <?= $error_project; ?>" name="project_id" id="project">
 
                 <?php foreach ($projects as $project): ?>
-                    <option value="<?=htmlspecialchars($project["id"]);?>"
-                        <?= $project_id == $project["id"] ? 'selected' : '' ?>
-                    ><?=htmlspecialchars($project["name"]);?></option>
+                    <option value="<?=htmlspecialchars($project["id"]);?>" <?= ($project_id == $project["id"]) ? 'selected' : '' ?>>
+                        <?=htmlspecialchars($project["name"]);?>
+                    </option>
                 <?php endforeach; ?>
             </select>
             <?php if (isset($errors['project_id'])) : ?>
                 <p class="form__message"><?= $errors['project_id'] ?></p>
             <?php endif ?>
+<!--            --><?//= $errors['project_id'] = $errors['project_id'] ? '<p class="form__message">'. $errors['project_id'] . '</p>' : '' ?>
         </div>
 
         <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
             <?php $error_date = isset($errors['date_make']) ? "form__input--error" : "" ?>
             <input class="form__input form__input--date  <?= $error_date; ?>" type="text" name="date_make" id="date" value="" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+
             <?php if (isset($errors['date_make'])) : ?>
                 <p class="form__message"><?= $errors['date_make'] ?></p>
             <?php endif ?>
+
         </div>
 
         <div class="form__row">

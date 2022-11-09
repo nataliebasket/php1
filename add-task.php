@@ -1,6 +1,7 @@
 <?php
-//require_once('functions.php');
-require_once('helpers.php');
+require_once('functions/functions.php');
+require_once('functions/helpers.php');
+require_once('functions/validation.php');
 require_once('db.php');
 require_once('model.php');
 
@@ -11,47 +12,20 @@ if ($con == false) {
 }
 else {
 
-//    $user_projects = getUserProjects($con, 1);
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
         $errors = [];
 
-        $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project_id' => FILTER_DEFAULT, 'date_make' => FILTER_DEFAULT]);
-
-        function test_input($data):string {
-            $data = trim($data);
-            $data = stripslashes($data);
-            $data = htmlspecialchars($data);
-            return $data;
-        }
-
-        // валидация названия задачи
-        if (!$task['name']) {
-            $errors['name'] = 'Заполните это поле';
-        } elseif ((strlen($task['name']) < 10)  or (strlen($task['name']) > 100 )) {
-            $errors['name'] = 'Кол-во символов от 10 до 100';
-        } else {
-            $task['name'] = test_input($task['name']);
-        }
-
-
-        // валидация выбранного проекта
-          if (!checkUserProjects($con, $task['project_id'], $user_id)) {
-              $errors['project_id'] = 'Такого проекта не существует.';
-          }
-
-          // валидация даты выполнения задачи
-        if (!$task['date_make']) {
-            $errors['date_make'] = 'Заполните это поле';
-        } elseif (!is_date_valid($task['date_make'])) {
-            $errors['date_make'] = 'Неверный формат даты';
-        } elseif ((strtotime('now') - strtotime($task['date_make'])) > 0 ) {
-            $errors['date_make'] = 'Дата выполнения раньше, чем сейчас.';
-        }
-
-
-
+        $task['name'] = test_input(filter_input(INPUT_POST, 'name'));
+        $task['project_id'] = test_input(filter_input(INPUT_POST, 'project_id'));
+        $task['date_make'] = filter_input(INPUT_POST, 'date_make');
         $task['file'] = null;
+        $task['user_id'] = $user_id;
+
+        // валидация полей
+        $errors['name'] = validate_task_name($task['name']);
+        $errors['project_id'] = validate_task_project_id($con, $task['project_id'], $user_id);
+        $errors['date_make'] = validate_task_date_make($task['date_make']);
 
         // сохраняем файл
         if ($_FILES['file']['name'] != null) {
@@ -59,12 +33,13 @@ else {
             $filename = $_FILES['file']['name'];
             $new_path = 'uploads/' . $filename;
             move_uploaded_file($current_path, $new_path);
-            print_r($_FILES['file']['name']);
             $task['file'] = $filename;
         }
 
-        $task['user_id'] = 1;
+        //удаляем из массива ошибок пустые значения
+        $errors = array_diff($errors, array('', NULL, false));
 
+        // если ошибок нет, то отправляем запрос
         if (!count($errors)) {
             $sql = "INSERT INTO task (name, project_id, date_make, file, user_id) VALUES (?, ?, ?, ?, ?)";
 

@@ -1,6 +1,6 @@
 <?php
-require_once('functions.php');
-require_once('helpers.php');
+require_once('functions/functions.php');
+require_once('functions/helpers.php');
 require_once('db.php');
 require_once('model.php');
 
