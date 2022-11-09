@@ -6,7 +6,7 @@
 <main class="content__main">
     <h2 class="content__main-heading">Добавление задачи</h2>
 
-    <form class="form"  action="add-task.php" method="post" autocomplete="off" enctype="multipart/form-data">
+    <form class="form" action="add-task.php" method="post" autocomplete="off" enctype="multipart/form-data">
         <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
             <?php $error_name = isset($errors['name']) ? "form__input--error" : "" ?>

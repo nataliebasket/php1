@@ -132,7 +132,7 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
  * @return string Итоговый HTML
  */
 function include_template($name, array $data = []) {
-    $name = 'templates/' . $name;
+    $name = 'view/templates/' . $name;
     $result = '';
 
     if (!is_readable($name)) {

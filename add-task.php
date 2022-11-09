@@ -3,7 +3,7 @@ require_once('functions/functions.php');
 require_once('functions/helpers.php');
 require_once('functions/validation.php');
 require_once('db.php');
-require_once('model.php');
+require_once('model/model.php');
 
 $user_id = 1;
 
