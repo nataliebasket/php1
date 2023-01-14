@@ -36,3 +36,21 @@ function checkUserProjects(object $con, int $project_id, int $user_id): array
 
     return mysqli_fetch_all($result_projects, MYSQLI_ASSOC);
 }
+
+
+function isEmailExists(object $con, string $email): bool
+{
+//    $sql_projects = sprintf(
+//        "SELECT 1 FROM user WHERE email ='%s' LIMIT 1", $email);
+    $sql_projects = sprintf(
+        "SELECT email FROM user WHERE email ='%s'", $email);
+    $result = mysqli_query($con, $sql_projects);
+
+//   print_r($result) ;
+//    if( $result) {
+//        return true;
+//    } else {
+//        return false;
+//    }
+    return (bool)mysqli_fetch_assoc($result);
+}

@@ -45,3 +45,34 @@ function validate_task_date_make(string $date) : string {
     } else
         return '';
 }
+
+
+function validate_user_email(mysqli $con, string $email) : string {
+//    print_r($email);
+    if (!$email) {
+        return 'Заполните это поле';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return 'E-mail введён некорректно';
+    } elseif ( isEmailExists($con, $email)) {
+        return 'Такой e-mail уже используется';
+    } else
+        return '';
+}
+
+function validate_user_password(string $password) : string {
+    if (!$password) {
+        return 'Заполните это поле';
+    } else
+        return '';
+}
+
+function validate_user_name(string $name) : string {
+    if (!$name) {
+        return 'Заполните это поле';
+    } else
+        return '';
+}
+
+
+
+

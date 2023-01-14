@@ -27,7 +27,7 @@ function isDateImportant(string $date) : bool {
     $isImportant = false;
     $currentDate = strtotime(date('Y-m-d H:i:s'));
     $userDate = strtotime($date);
-    print_r($userDate);
+//    print_r($userDate);
 
     if (floor(($currentDate - $userDate) / 3600) <= 24) {
         $isImportant = true;
@@ -40,7 +40,7 @@ function isDateImportant(string $date) : bool {
  * @$data string - строка для форматирования
  * @return string - отформатированная строка
  */
-function test_input($data) : string {
+function test_input(string $data) : string {
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
