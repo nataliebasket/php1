@@ -5,6 +5,12 @@ require_once('functions/validation.php');
 require_once('db.php');
 require_once('model/model.php');
 
+if (isset($_SESSION['username'])) {
+    $is_session = true;
+} else {
+    $is_session = false;
+}
+
 if ($con == false) {
     print("Ошибка подключения к бд: " . mysqli_connect_error());
 }
@@ -43,10 +49,15 @@ else {
         }
     }
 
-    $layout_content = include_template('register.php', [
+    $page_content = include_template('register.php', [
         'errors' => $errors ?? null,
         'user_name' => $user['name'] ?? null,
         'user_email' => $user['email'] ?? null,
+    ]);
+    $layout_content = include_template('layout.php', [
+        'title' => "Вход на сайт",
+        'content' => $page_content,
+        'is_session' => $is_session,
     ]);
 
     print ($layout_content);

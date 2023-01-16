@@ -9,31 +9,41 @@
     <link rel="stylesheet" href="view/css/flatpickr.min.css">
 </head>
 
-<body>
+<body <?php if (!$is_session) :?>class="body-background" <?php endif; ?>>
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
-    <div class="container container--with-sidebar">
+    <div class="container <?php if ($is_session) :?>container--with-sidebar<?php endif; ?>">
         <header class="main-header">
             <a href="/">
                 <img src="view/img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
             </a>
 
-            <div class="main-header__side">
-                <a class="main-header__side-item button button--plus open-modal" href="/add-task.php">Добавить задачу</a>
+            <?php if ($is_session) : ?>
+                <div class="main-header__side">
+                    <a class="main-header__side-item button button--plus open-modal" href="/add-task.php">Добавить задачу</a>
 
-                <div class="main-header__side-item user-menu">
-                    <div class="user-menu__data">
-                        <p>Наташа</p>
-                        <a href="#">Выйти</a>
+                    <div class="main-header__side-item user-menu">
+                        <div class="user-menu__data">
+                            <p><?= $user_name; ?></p>
+                            <a href="/logout.php">Выйти</a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php else : ?>
+                <div class="main-header__side">
+                    <a class="main-header__side-item button button--transparent" href="/auth.php">Войти</a>
+                </div>
+            <?php endif; ?>
+
         </header>
+
 
         <div class="content">
             <?= $content; ?>
         </div>
+
+
     </div>
 </div>
 

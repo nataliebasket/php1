@@ -59,6 +59,15 @@ function validate_user_email(mysqli $con, string $email) : string {
         return '';
 }
 
+function validate_user_entry_email(mysqli $con, string $email) : string {
+    if (!$email) {
+        return 'Заполните это поле';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return 'E-mail введён некорректно';
+    } else
+        return '';
+}
+
 function validate_user_password(string $password) : string {
     if (!$password) {
         return 'Заполните это поле';
