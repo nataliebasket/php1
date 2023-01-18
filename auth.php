@@ -7,8 +7,9 @@ require_once('model/model.php');
 
 
 session_start();
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION['user'])) {
     $is_session = true;
+    header('Location: index.php');
 } else {
     $is_session = false;
 }
@@ -29,25 +30,24 @@ else {
         $errors['email'] = validate_user_entry_email($con, $email);
         $errors['password'] = validate_user_password($password);
 
-        if (($errors['email'] == '') && ($errors['password'] == '')) {
-            $sql_projects = sprintf(
-                "SELECT * FROM user WHERE email ='%s'", $email);
-            $result = mysqli_query($con, $sql_projects);
+//        if (($errors['email'] == '') && ($errors['password'] == '')) {
+        $errors = array_filter($errors);
 
+        if (!count($errors)) {
+
+            $sql_projects = sprintf("SELECT * FROM user WHERE email ='%s'", $email);
+            $result = mysqli_query($con, $sql_projects);
             $user = mysqli_fetch_assoc ($result);
 
             if (password_verify($password, $user['password'])) {
                 $_SESSION['user'] = $user;
-                header('Location: index.php');
 //                print_r($_SESSION);
+                header('Location: index.php');
                 exit();
             } else {
                 $errors['password'] = 'Неверно введены почта или пароль';
             }
         }
-
-        //удаляем из массива ошибок пустые значения
-        $errors = array_diff($errors, array('', NULL, false));
     }
 
     $page_content = include_template('auth.php', [
