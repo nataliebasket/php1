@@ -5,7 +5,13 @@ require_once('functions/validation.php');
 require_once('db.php');
 require_once('model/model.php');
 
-$user_id = 1;
+session_start();
+if (isset($_SESSION['user'])) {
+    $is_session = true;
+} else {
+    $is_session = false;
+    header('Location: auth.php');
+}
 
 if ($con == false) {
     print("Ошибка подключения к бд: " . mysqli_connect_error());
@@ -20,11 +26,11 @@ else {
         $task['project_id'] = test_input(filter_input(INPUT_POST, 'project_id'));
         $task['date_make'] = filter_input(INPUT_POST, 'date_make');
         $task['file'] = null;
-        $task['user_id'] = $user_id;
+        $task['user_id'] = $_SESSION['user']['id'];
 
         // валидация полей
         $errors['name'] = validate_task_name($task['name']);
-        $errors['project_id'] = validate_task_project_id($con, $task['project_id'], $user_id);
+        $errors['project_id'] = validate_task_project_id($con, $task['project_id'], $_SESSION['user']['id']);
         $errors['date_make'] = validate_task_date_make($task['date_make']);
 
         // сохраняем файл
@@ -54,7 +60,7 @@ else {
     }
 
     $page_content = include_template('add-task.php', [
-        'projects' => getUserProjects($con, $user_id),
+        'projects' => getUserProjects($con, $_SESSION['user']['id']),
         'errors' => $errors ?? null,
         'task_name' => $task['name'] ?? null,
         'project_id' => $task['project_id'] ?? null,
@@ -64,7 +70,9 @@ else {
 
     $layout_content = include_template('layout.php', [
         'content' => $page_content,
-        'title' => 'Дела в порядке - Главная'
+        'title' => 'Дела в порядке - Главная',
+        'is_session' => true,
+        'user_name' => $_SESSION['user']['name'],
     ]);
 
     print ($layout_content);

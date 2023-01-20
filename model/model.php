@@ -4,10 +4,15 @@
 function getUserProjects(object $con, int $id): array
 {
     $sql_projects = sprintf(
-    "SELECT COUNT(p.name) AS name_count, p.id, p.name
-    FROM project p INNER JOIN task t ON p.id = t.project_id
-    INNER JOIN user u ON t.user_id = u.id
-    WHERE u.id = '%s'  GROUP BY p.id;", $id);
+            "SELECT p.user_id, p.id, p.name, COUNT(t.id) AS name_count
+    FROM project AS p
+    left JOIN task AS t ON t.project_id = p.id WHERE p.user_id = '%s'
+    GROUP BY p.id
+    ORDER BY p.id;", $id);
+
+//    "SELECT id, name, (SELECT COUNT(id) FROM task WHERE user_id = '%s' AND project_id = p.id) name_count
+//    FROM project p
+//    WHERE user_id = '%s'  ORDER BY name;", $id, $id);
     $result_projects = mysqli_query($con, $sql_projects);
 
     return mysqli_fetch_all($result_projects, MYSQLI_ASSOC);

@@ -5,7 +5,13 @@ require_once('functions/validation.php');
 require_once('db.php');
 require_once('model/model.php');
 
-$user_id = 1;
+session_start();
+if (isset($_SESSION['user'])) {
+    $is_session = true;
+} else {
+    $is_session = false;
+    header('Location: auth.php');
+}
 
 if ($con == false) {
     print("Ошибка подключения к бд: " . mysqli_connect_error());
@@ -29,7 +35,7 @@ else {
         if (!count($errors)) {
             $sql = "INSERT INTO project (name, user_id) VALUES (?, ?)";
 
-            $stmt = db_get_prepare_stmt($con, $sql, [$project_name, $user_id]);//!!!!!!
+            $stmt = db_get_prepare_stmt($con, $sql, [$project_name, $_SESSION['user']['id']]);//!!!!!!
             $res = mysqli_stmt_execute($stmt);
 
             if ($res) {
@@ -40,7 +46,7 @@ else {
     }
 
     $page_content = include_template('add-project.php', [
-        'projects' => getUserProjects($con, $user_id),
+        'projects' => getUserProjects($con, $_SESSION['user']['id']),
         'errors' => $errors ?? null,
         'project_name' => $project['name'] ?? null,
 
@@ -53,7 +59,7 @@ else {
         'content' => $page_content,
         'title' => 'Дела в порядке - Добавление проекта',
         'is_session' => true,
-        'user_name' => '123',
+        'user_name' => $_SESSION['user']['name'],
     ]);
 
     print ($layout_content);
