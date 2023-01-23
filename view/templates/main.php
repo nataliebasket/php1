@@ -28,18 +28,14 @@
     </div>
 
     <table class="tasks">
-
-
         <?php foreach ($tasks as $key => $value): ?>
-            <?php if (($value['is_done']) && ($show_complete_tasks == 0)): ?>
-                <?php continue; ?>
-            <?php elseif ($value['name']): ?>
+            <?php if ($value['name']): ?>
                 <tr class="tasks__item task <?= ($value['is_done'])? "task--completed": "" ?>
                     <?php if ($value['date_make']): ?><?php if (isDateImportant($value['date_make'])): ?>task--important<?php endif; ?><?php endif; ?>">
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
                             <input class="checkbox__input visually-hidden" type="checkbox" <?= ($value['is_done'])? "checked": "" ?>>
-                            <span class="checkbox__text"><?=htmlspecialchars($value['name']);?></span>
+                            <span class="checkbox__text"><?=htmlspecialchars($value['name']);?><?= isDateImportant($value['date_make']);?></span>
                         </label>
                     </td>
 

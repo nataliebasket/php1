@@ -27,9 +27,8 @@ function isDateImportant(string $date) : bool {
     $isImportant = false;
     $currentDate = strtotime(date('Y-m-d H:i:s'));
     $userDate = strtotime($date);
-//    print_r($userDate);
 
-    if (floor(($currentDate - $userDate) / 3600) <= 24) {
+    if (floor(($userDate - $currentDate) / 3600) <= 24) {
         $isImportant = true;
     }
     return ($isImportant);

@@ -34,7 +34,10 @@ if ($is_session) { // если пользователь зарегистриро
         }
 //        print_r(getUserProjects ($con, 13));
 
-        if ((!$is_project_found and $project_get_id) or (getUserTasks($con,$_SESSION['user']['id'], $project_id) == [])) {
+        if (getUserTasks($con,$_SESSION['user']['id'], $project_id) == [] ) {
+            $page_content = include_template('404.php', ['text404' => 'В проекте ещё нет задач!',]);
+        }
+        elseif ((!$is_project_found and $project_get_id) ) {
             http_response_code(404);
             $page_content = include_template('404.php', ['text404' => '404 Такого проекта не существует',]);
         } else {
