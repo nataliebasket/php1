@@ -6,8 +6,8 @@
 <main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
 
-    <form class="search-form" action="index.php" method="post" autocomplete="off">
-        <input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
+    <form class="search-form" action="index.php" method="get" autocomplete="off">
+        <input class="search-form__input" type="text" name="text_search" value="<?= isset($user_search)? $user_search: "" ?>" placeholder="Поиск по задачам">
 
         <input class="search-form__submit" type="submit" name="" value="Искать">
     </form>
@@ -34,7 +34,7 @@
                     <?php if ($value['date_make']): ?><?php if (isDateImportant($value['date_make'])): ?>task--important<?php endif; ?><?php endif; ?>">
                     <td class="task__select">
                         <label class="checkbox task__checkbox">
-                            <input class="checkbox__input visually-hidden" type="checkbox" <?= ($value['is_done'])? "checked": "" ?>>
+                            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" <?= ($value['is_done'])? "checked": "" ?> value="<?= $value['id'] ?>">
                             <span class="checkbox__text"><?=htmlspecialchars($value['name']);?><?= isDateImportant($value['date_make']);?></span>
                         </label>
                     </td>

@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $title; ?></title>
+<!--    <link rel="stylesheet" href="view/css/normalize.css">-->
+<!--    <link rel="stylesheet" href="view/css/style.css">-->
     <link rel="stylesheet" href="view/css/normalize.css">
     <link rel="stylesheet" href="view/css/style.css">
-    <link rel="stylesheet" href="view/css/flatpickr.min.css">
+    <?= $user_name ? '<link rel="stylesheet" href="view/css/flatpickr.min.css">' : '' ?>
+
 </head>
 
 <body <?php if (!$is_session) :?>class="body-background" <?php endif; ?>>

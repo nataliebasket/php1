@@ -31,3 +31,8 @@ CREATE TABLE task (
 );
 
 CREATE INDEX c_task_name ON task(name);
+
+//полнотекстовый поиск для названия задачи
+ALTER TABLE task ADD FULLTEXT(name)
+
+SELECT name FROM task WHERE MATCH(name) AGAINST('для')
