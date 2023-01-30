@@ -14,10 +14,10 @@
 
     <div class="tasks-controls">
         <nav class="tasks-switch">
-            <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-            <a href="/" class="tasks-switch__item">Повестка дня</a>
-            <a href="/" class="tasks-switch__item">Завтра</a>
-            <a href="/" class="tasks-switch__item">Просроченные</a>
+            <a href="/index.php" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
+            <a href="/index.php?task_filter=today" class="tasks-switch__item">Повестка дня</a>
+            <a href="/index.php?task_filter=tomorrow" class="tasks-switch__item">Завтра</a>
+            <a href="/index.php?task_filter=overdue" class="tasks-switch__item">Просроченные</a>
         </nav>
 
         <label class="checkbox">
@@ -29,7 +29,26 @@
 
     <table class="tasks">
         <?php foreach ($tasks as $key => $value): ?>
-            <?php if ($value['name']): ?>
+            <?php if (($value['name']) && !($value['is_done'])) : ?>
+                <tr class="tasks__item task <?= ($value['is_done'])? "task--completed": "" ?>
+                    <?php if ($value['date_make']): ?><?php if (isDateImportant($value['date_make'])): ?>task--important<?php endif; ?><?php endif; ?>">
+                    <td class="task__select">
+                        <label class="checkbox task__checkbox">
+                            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" <?= ($value['is_done'])? "checked": "" ?> value="<?= $value['id'] ?>">
+                            <span class="checkbox__text"><?=htmlspecialchars($value['name']);?><?= isDateImportant($value['date_make']);?></span>
+                        </label>
+                    </td>
+
+                    <?php if ($value['date_make']): ?>
+                        <td class="task__date"><?=date( "Y-m-d", strtotime($value['date_make']));?></td>
+                    <?php else: ?>
+                        <td class="task__date"></td>
+                    <?php endif; ?>
+                    <td class="task__controls">
+                    </td>
+                </tr>
+            <?php endif ?>
+            <?php if (($value['name']) && ($show_complete_tasks) && $value['is_done']) : ?>
                 <tr class="tasks__item task <?= ($value['is_done'])? "task--completed": "" ?>
                     <?php if ($value['date_make']): ?><?php if (isDateImportant($value['date_make'])): ?>task--important<?php endif; ?><?php endif; ?>">
                     <td class="task__select">

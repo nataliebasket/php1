@@ -77,6 +77,18 @@ if ($is_session) { // если пользователь зарегистриро
             ]);
         }
 
+        // фильтрация задач по дням
+        $task_filter = filter_input(INPUT_GET, 'task_filter');
+        if ($task_filter) {
+            $tasks = getFilterTasks($con, $_SESSION['user']['id'], $task_filter);
+            $page_content = include_template('main.php', [
+                'projects' => getUserProjects ($con, $_SESSION['user']['id']),
+                'project_id' => $project_id,
+                'tasks' => $tasks,
+                'show_complete_tasks' => $show_complete_tasks
+            ]);
+        }
+
         $layout_content = include_template('layout.php', [
             'user_name' => $_SESSION['user']['name'],
             'content' => $page_content,
@@ -89,6 +101,7 @@ if ($is_session) { // если пользователь зарегистриро
 } else { // если пользователь не зарегистрирован
     $page_content = include_template('guest.php');
     $layout_content = include_template('layout.php', [
+        'user_name' => '',
         'title' => 'Дела в порядке - Главная',
         'content' => $page_content,
         'is_session' => $is_session,

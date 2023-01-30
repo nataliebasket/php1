@@ -58,6 +58,7 @@ else {
 
 
     $layout_content = include_template('layout.php', [
+        'user_name' => '',
         'title' => "Вход на сайт",
         'content' => $page_content,
         'is_session' => $is_session,

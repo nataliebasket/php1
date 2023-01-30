@@ -88,3 +88,26 @@ function removeCompleteTask(object $con, int $task_id)
     $result = mysqli_query($con, $sql);
 
 }
+
+
+function getFilterTasks(object $con, int $user_id, string $filter)
+{
+    $sql = '';
+    switch ($filter) {
+        case "today":
+//            $date = ' =  DATE(NOW())';
+            $sql = 'SELECT * FROM task t WHERE user_id = ' . $user_id . ' AND DATE(date_make) = DATE(NOW())';
+            break;
+        case "tomorrow":
+//            $date = ' = DATE((NOW() + INTERVAL 1 DAY))';
+            $sql = 'SELECT * FROM task t WHERE user_id = ' . $user_id . ' AND DATE(date_make) = DATE((NOW() + INTERVAL 1 DAY))';
+            break;
+        case "overdue":
+//            $date = ' < DATE(NOW())';
+            $sql = 'SELECT * FROM task t WHERE user_id = ' . $user_id . ' AND DATE(date_make) < DATE(NOW())';
+            break;
+    }
+//    $sql_tasks = sprintf("SELECT * FROM task t WHERE user_id = '%s' AND DATE(date_make) '%s'", $user_id, $date );
+    $result = mysqli_query($con, $sql);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
