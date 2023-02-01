@@ -20,9 +20,6 @@ if ($is_session) { // если пользователь зарегистриро
         print("Ошибка подключения к бд: " . mysqli_connect_error());
     }
     else {
-
-
-
         // получение проектов
         $project_id = 0;
         $project_get_id = filter_input(INPUT_GET, 'project_id', FILTER_SANITIZE_NUMBER_INT) ?? 0;
@@ -85,7 +82,8 @@ if ($is_session) { // если пользователь зарегистриро
                 'projects' => getUserProjects ($con, $_SESSION['user']['id']),
                 'project_id' => $project_id,
                 'tasks' => $tasks,
-                'show_complete_tasks' => $show_complete_tasks
+                'show_complete_tasks' => $show_complete_tasks,
+                'task_filter' => $task_filter
             ]);
         }
 

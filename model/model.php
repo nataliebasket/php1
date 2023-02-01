@@ -44,6 +44,7 @@ function getUserSearch (object $con, int $user_id, int $project_id, string $sear
     return mysqli_fetch_all($result_tasks, MYSQLI_ASSOC);
 }
 
+// проверка есть ли у пользователя проекты с таким id
 function checkUserProjects(object $con, int $project_id, int $user_id): array
 {
     $sql_projects = sprintf(
@@ -52,6 +53,7 @@ function checkUserProjects(object $con, int $project_id, int $user_id): array
 
     return mysqli_fetch_all($result_projects, MYSQLI_ASSOC);
 }
+
 
 function checkUserTasks(object $con, int $task_id, int $user_id): bool
 {
@@ -72,21 +74,19 @@ function isEmailExists(object $con, string $email): bool
     return (bool)mysqli_fetch_assoc($result);
 }
 
-function completeTask(object $con, int $task_id)
+function completeTask(object $con, int $task_id) : void
 {
     $sql = sprintf(
         "UPDATE task SET is_done = 1 WHERE id = '%s';", $task_id);
     $result = mysqli_query($con, $sql);
-
 }
 
 
-function removeCompleteTask(object $con, int $task_id)
+function removeCompleteTask(object $con, int $task_id) : void
 {
     $sql = sprintf(
         "UPDATE task SET is_done = 0 WHERE id = '%s';", $task_id);
     $result = mysqli_query($con, $sql);
-
 }
 
 
@@ -95,19 +95,15 @@ function getFilterTasks(object $con, int $user_id, string $filter)
     $sql = '';
     switch ($filter) {
         case "today":
-//            $date = ' =  DATE(NOW())';
             $sql = 'SELECT * FROM task t WHERE user_id = ' . $user_id . ' AND DATE(date_make) = DATE(NOW())';
             break;
         case "tomorrow":
-//            $date = ' = DATE((NOW() + INTERVAL 1 DAY))';
             $sql = 'SELECT * FROM task t WHERE user_id = ' . $user_id . ' AND DATE(date_make) = DATE((NOW() + INTERVAL 1 DAY))';
             break;
         case "overdue":
-//            $date = ' < DATE(NOW())';
             $sql = 'SELECT * FROM task t WHERE user_id = ' . $user_id . ' AND DATE(date_make) < DATE(NOW())';
             break;
     }
-//    $sql_tasks = sprintf("SELECT * FROM task t WHERE user_id = '%s' AND DATE(date_make) '%s'", $user_id, $date );
     $result = mysqli_query($con, $sql);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }

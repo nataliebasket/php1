@@ -4,19 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $title; ?></title>
-<!--    <link rel="stylesheet" href="view/css/normalize.css">-->
-<!--    <link rel="stylesheet" href="view/css/style.css">-->
     <link rel="stylesheet" href="view/css/normalize.css">
     <link rel="stylesheet" href="view/css/style.css">
     <?= $user_name ? '<link rel="stylesheet" href="view/css/flatpickr.min.css">' : '' ?>
 
 </head>
 
-<body <?php if (!$is_session) :?>class="body-background" <?php endif; ?>>
+<body <?= (!$is_session) ? 'class="body-background"' : '' ?>>
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
-    <div class="container <?php if ($is_session) :?>container--with-sidebar<?php endif; ?>">
+    <div class="container <?= $is_session ? 'container--with-sidebar' : '' ?>">
         <header class="main-header">
             <a href="/">
                 <img src="view/img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
